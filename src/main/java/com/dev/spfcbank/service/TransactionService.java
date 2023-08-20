@@ -1,6 +1,7 @@
 package com.dev.spfcbank.service;
 
 import com.dev.spfcbank.domain.transaction.Transaction;
+import com.dev.spfcbank.domain.transaction.TransactionDTO;
 import com.dev.spfcbank.domain.user.User;
 import com.dev.spfcbank.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,10 @@ public class TransactionService {
     @Value("${authorization.api.url}")
     private String authotizationApiUrl;
 
-    public Transaction createTransaction(User sender, User receiver, BigDecimal amount) throws Exception {
-
-        userService.validateTransaction(sender, amount);
-        isAuthorized();
-
+    public Transaction createTransaction(TransactionDTO data) throws Exception {
+        userService.validateTransaction(data.sender(), data.value());
+        this.isAuthorized();
+        this.saveTransaction(data);
 
         return null;
     }
@@ -52,9 +52,23 @@ public class TransactionService {
                 throw new Exception("Declined transaction");
             }
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            throw new Exception("Error while communicating with authorization server", e)
+            throw new Exception("Error while communicating with authorization server", e);
         } catch (RestClientException e) {
             throw new Exception("Connection error", e);
         }
+    }
+
+    public void saveTransaction(TransactionDTO data) {
+        repository.save(new Transaction(data));
+        this.updateUserBalance(data);
+    }
+
+    public void updateUserBalance(TransactionDTO data){
+        User sender = new User();
+        sender.getBalance().subtract(data.value());
+        userService.saveUser(sender);
+        User receiver = new User();
+        receiver.getBalance().add(data.value());
+        userService.saveUser(receiver);
     }
 }
