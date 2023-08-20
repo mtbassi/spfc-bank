@@ -35,6 +35,10 @@ public class UserService {
     }
 
     public User createUser(UserDTO data){
-        return this.repository.save(new User(data));
+        return saveUser(new User(data));
+    }
+
+    public User saveUser(User user){
+        return this.repository.save(user);
     }
 }
