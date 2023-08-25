@@ -31,9 +31,12 @@ public class TransactionService {
     private String authotizationApiUrl;
 
     public Transaction createTransaction(TransactionDTO data) throws Exception {
-        userService.validateTransaction(data.sender(), data.value());
+        User sender = userService.findUserById(data.sender());
+        User receiver = userService.findUserById(data.receiver());
+
+        userService.validateTransaction(sender, data.value());
         this.isAuthorized();
-        return this.saveTransaction(data);
+        return this.saveTransaction(sender, receiver, data.value());
     }
 
     public void isAuthorized() throws Exception {
@@ -57,19 +60,17 @@ public class TransactionService {
         }
     }
 
-    public Transaction saveTransaction(TransactionDTO data) {
-        Transaction transaction = new Transaction(data);
+    public Transaction saveTransaction(User sender, User receiver, BigDecimal value) throws Exception {
+        Transaction transaction = new Transaction(sender, receiver, value);
         repository.save(transaction);
-        this.updateUserBalance(data);
+        this.updateUserBalance(sender, receiver, value);
         return transaction;
     }
 
-    public void updateUserBalance(TransactionDTO data){
-        User sender = new User();
-        sender.getBalance().subtract(data.value());
+    public void updateUserBalance(User sender, User receiver, BigDecimal value){
+        sender.setBalance(sender.getBalance().subtract(value));
         userService.saveUser(sender);
-        User receiver = new User();
-        receiver.getBalance().add(data.value());
+        receiver.setBalance(receiver.getBalance().add(value));
         userService.saveUser(receiver);
     }
 
