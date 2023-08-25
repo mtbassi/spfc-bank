@@ -22,8 +22,8 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.createTransaction(data), HttpStatus.CREATED);
     }
 
-    @PostMapping
-    public ResponseEntity<Transaction> findTransactionById(@PathVariable UUID id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Transaction> findTransactionById(@PathVariable UUID id) throws Exception {
         return new ResponseEntity<>(transactionService.findTransactionById(id), HttpStatus.OK);
     }
 }
