@@ -23,10 +23,10 @@ public class Transaction {
     private UUID id;
     private BigDecimal amount;
     @ManyToOne
-    @JoinColumn(name = "receiver_id/")
+    @JoinColumn(name = "sender_id")
     private User sender;
     @ManyToOne
-    @JoinColumn(name = "receiver_id/")
+    @JoinColumn(name = "receiver_id")
     private User receiver;
 
     public Transaction(TransactionDTO data) {
