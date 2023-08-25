@@ -29,9 +29,9 @@ public class Transaction {
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
-    public Transaction(TransactionDTO data) {
-        this.sender = data.sender();
-        this.amount = data.value();
-        this.receiver = data.receiver();
+    public Transaction(User sender, User receiver, BigDecimal amount) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.amount = amount;
     }
 }
