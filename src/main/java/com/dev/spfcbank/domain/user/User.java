@@ -1,7 +1,7 @@
 package com.dev.spfcbank.domain.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class User {
     @Column(unique = true)
     private String document;
     @Column(unique = true)
-    @Email(message = "Input does not respect email standard")
+    @Pattern(regexp=".+@.+\\..+", message="Please provide a valid email address")
     private String email;
     private String password;
     private BigDecimal balance;
