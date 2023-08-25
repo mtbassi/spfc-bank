@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class TransactionService {
@@ -70,5 +71,9 @@ public class TransactionService {
         User receiver = new User();
         receiver.getBalance().add(data.value());
         userService.saveUser(receiver);
+    }
+
+    public Transaction findTransactionById(UUID id) throws Exception {
+        return repository.findById(id).orElseThrow(() -> new Exception("User not found"));
     }
 }

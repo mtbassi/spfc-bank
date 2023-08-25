@@ -6,10 +6,9 @@ import com.dev.spfcbank.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user/transaction")
@@ -21,5 +20,10 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionDTO data) throws Exception {
         return new ResponseEntity<>(transactionService.createTransaction(data), HttpStatus.CREATED);
+    }
+
+    @PostMapping
+    public ResponseEntity<Transaction> findTransactionById(@PathVariable UUID id){
+        return new ResponseEntity<>(transactionService.findTransactionById(id), HttpStatus.OK);
     }
 }
