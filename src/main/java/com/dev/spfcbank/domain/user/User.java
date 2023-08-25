@@ -1,6 +1,7 @@
 package com.dev.spfcbank.domain.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +26,9 @@ public class User {
     @Column(unique = true)
     private String document;
     @Column(unique = true)
+    @Email
     private String email;
-    private String senha;
+    private String password;
     private BigDecimal balance;
     private UserType userType;
 
@@ -35,7 +37,7 @@ public class User {
         this.lastName = data.lastName();
         this.document = data.document();
         this.email = data.email();
-        this.senha = data.senha();
+        this.password = data.password();
         this.balance = data.balance();
         this.userType = data.userType();
     }
