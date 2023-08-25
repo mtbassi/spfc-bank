@@ -1,6 +1,7 @@
 package com.dev.spfcbank.infra;
 
 import com.dev.spfcbank.domain.exception.ExceptionDTO;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity threadConstraintViolation(MethodArgumentNotValidException exception){
+    public ResponseEntity threadMethodArgumentNotValid(MethodArgumentNotValidException exception){
         String message = exception.getBindingResult().getFieldError().getDefaultMessage();
         ExceptionDTO dto = new ExceptionDTO(message, HttpStatus.BAD_REQUEST.value());
         return ResponseEntity.badRequest().body(dto);
