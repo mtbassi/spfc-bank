@@ -32,9 +32,7 @@ public class TransactionService {
     public Transaction createTransaction(TransactionDTO data) throws Exception {
         userService.validateTransaction(data.sender(), data.value());
         this.isAuthorized();
-        this.saveTransaction(data);
-
-        return null;
+        return this.saveTransaction(data);
     }
 
     public void isAuthorized() throws Exception {
@@ -58,9 +56,11 @@ public class TransactionService {
         }
     }
 
-    public void saveTransaction(TransactionDTO data) {
-        repository.save(new Transaction(data));
+    public Transaction saveTransaction(TransactionDTO data) {
+        Transaction transaction = new Transaction(data);
+        repository.save(transaction);
         this.updateUserBalance(data);
+        return transaction;
     }
 
     public void updateUserBalance(TransactionDTO data){
