@@ -26,7 +26,7 @@ public class User {
     @Column(unique = true)
     private String document;
     @Column(unique = true)
-    @Email
+    @Email(message = "Input does not respect email standard")
     private String email;
     private String password;
     private BigDecimal balance;
