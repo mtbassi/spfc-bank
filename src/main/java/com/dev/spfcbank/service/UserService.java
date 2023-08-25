@@ -21,7 +21,7 @@ public class UserService {
         if (sender.getUserType().equals(UserType.MERCHANT)){
             throw new Exception("User cannot perform transactions");
         }
-        if (sender.getBalance().compareTo(amount) > 0){
+        if (sender.getBalance().compareTo(amount) < 0){
             throw new Exception("Insufficient balance");
         }
     }
